@@ -15,8 +15,6 @@ e
 5NZWalksAPI/Migrations/20230624113009_init.Designer.cs,6\8\68785db4b6ad273bb004949111d1d53912ef5c52
 \
 ,NZWalksAPI/Migrations/20230624113009_init.cs,8\6\86766eea9f9b585472a096cfc1867e6c92ec00f8
-E
-NZWalksAPI/Program.cs,e\e\ee3ee03fa0bce3359b443b88cd53674789e14f5b
 S
 #NZWalksAPI/Data/NzWalksDbContext.cs,a\5\a55fa3a48d40425d3211a4719172dd2cd83964c9
 K

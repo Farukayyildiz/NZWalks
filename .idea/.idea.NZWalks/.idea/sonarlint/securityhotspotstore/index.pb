@@ -9,8 +9,6 @@ c
 3NZWalksAPI/Controllers/WeatherForecastController.cs,2\2\2260102d752d50214635ae7341d4ce7e6d2a1fb6
 V
 &NZWalksAPI/Models/Domain/Difficulty.cs,9\2\92253bd3d0d8b221ed29d4ddd52ed2d26490649b
-E
-NZWalksAPI/Program.cs,e\e\ee3ee03fa0bce3359b443b88cd53674789e14f5b
 f
 6NZWalksAPI/Migrations/NzWalksDbContextModelSnapshot.cs,c\5\c528f0322346f0d1dafb75bb741d7c68e2c15754
 e

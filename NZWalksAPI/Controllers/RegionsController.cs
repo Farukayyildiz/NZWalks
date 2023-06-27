@@ -1,13 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NZWalksAPI.Data;
 using NZWalksAPI.Models.Domain;
 using NZWalksAPI.Models.DTO;
+using NZWalksAPI.Repositories;
 
 namespace NZWalksAPI.Controllers
 {
@@ -16,18 +12,20 @@ namespace NZWalksAPI.Controllers
     public class RegionsController : ControllerBase
     {
         private readonly NzWalksDbContext _context;
+        private readonly IRegionRepository _regionRepository;
 
-        public RegionsController(NzWalksDbContext context)
+        public RegionsController(NzWalksDbContext context,IRegionRepository regionRepository)
         {
             _context = context;
+            _regionRepository = regionRepository;
         }
 
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAllAsync()
         {
             //Get Data from database - Domain Models
-            var regionsDomain = await _context.Regions.ToListAsync();
+            var regionsDomain = await _regionRepository.GetAllAsync();
 
             //Map domain models to DTOs
             var regionsDto = new List<RegionDto>();
@@ -48,12 +46,12 @@ namespace NZWalksAPI.Controllers
 
         [HttpGet]
         [Route("{Id:Guid}")]
-        public IActionResult GetById([FromRoute] Guid Id)
+        public async Task<IActionResult> GetById([FromRoute] Guid Id)
         {
             // var region = _context.Regions.Find(Id); //just works with ID field. It is useless for other fields.!!
 
             //Get Region Domain Model From DB
-            var regionDomain = _context.Regions.FirstOrDefault(x => x.Id == Id);
+            var regionDomain = await _regionRepository.GetByIdAsync(Id);
 
             if (regionDomain == null)
             {
@@ -74,7 +72,7 @@ namespace NZWalksAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] CreateRegionRequestDto createRegionRequestDto)
+        public async Task<IActionResult> Create([FromBody] CreateRegionRequestDto createRegionRequestDto)
         {
             //Map DTO to Domain Model
             var regionDomainModel = new Region
@@ -85,8 +83,8 @@ namespace NZWalksAPI.Controllers
             };
 
             //Use Domain Model to Create Region
-            _context.Regions.Add(regionDomainModel);
-            _context.SaveChanges();
+            await _context.Regions.AddAsync(regionDomainModel);
+            await _context.SaveChangesAsync();
 
             //It turns to information about newly saved item. And show it in the swagger.
             //Map Domain Model Back to DTO
@@ -103,10 +101,11 @@ namespace NZWalksAPI.Controllers
 
         [HttpPut]
         [Route("{Id:Guid}")] //only Guid type are passed. ( ' : '  for filtering)
-        public IActionResult Update([FromRoute] Guid Id, [FromBody] UpdateRegionRequestDto updateRegionRequestDto)
+        public async Task<IActionResult> Update([FromRoute] Guid Id,
+            [FromBody] UpdateRegionRequestDto updateRegionRequestDto)
         {
             //Check if region exists
-            var regionDomainModel = _context.Regions.FirstOrDefault(x => x.Id == Id);
+            var regionDomainModel = await _context.Regions.FirstOrDefaultAsync(x => x.Id == Id);
             if (regionDomainModel == null)
                 return NotFound();
 
@@ -115,7 +114,7 @@ namespace NZWalksAPI.Controllers
             regionDomainModel.Name = updateRegionRequestDto.Name;
             regionDomainModel.RegionImageUrl = updateRegionRequestDto.RegionImageUrl;
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             //We never back Domain models. We always back DTOs to client
             //Map Domain Model Back To DTO 
@@ -126,23 +125,23 @@ namespace NZWalksAPI.Controllers
                 Code = regionDomainModel.Code,
                 RegionImageUrl = regionDomainModel.RegionImageUrl
             };
-            
+
             //Return to Swagger to show it
             return Ok(regionDto);
         }
 
         [HttpDelete]
         [Route("{Id:Guid}")]
-        public IActionResult DeleteById([FromRoute] Guid Id)
+        public async Task<IActionResult> DeleteById([FromRoute] Guid Id)
         {
-            var regionDomainModel = _context.Regions.FirstOrDefault(x => x.Id == Id);
-            
+            var regionDomainModel = await _context.Regions.FirstOrDefaultAsync(x => x.Id == Id);
+
             if (regionDomainModel == null)
                 return NotFound();
 
-            _context.Regions.Remove(regionDomainModel);
-            _context.SaveChanges();
-            
+            _context.Regions.Remove(regionDomainModel); //There is no async delete method. It is still sync.
+             await _context.SaveChangesAsync();
+
             var regionDto = new RegionDto()
             {
                 Id = regionDomainModel.Id,
