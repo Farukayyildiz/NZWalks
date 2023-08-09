@@ -28,4 +28,31 @@ public class SQLRegionRepository : IRegionRepository
         await _context.SaveChangesAsync();
         return region;
     }
+
+    public async Task<Region?> UpdateAsync(Guid Id, Region region)
+    {
+        var existingRegion = await _context.Regions.FirstOrDefaultAsync(x => x.Id == Id);
+        
+        if (existingRegion == null)
+            return null;
+
+        existingRegion.Code = region.Code;
+        existingRegion.Name = region.Name;
+        existingRegion.RegionImageUrl = region.RegionImageUrl;
+
+        await _context.SaveChangesAsync();
+        return existingRegion;
+    }
+
+    public async Task<Region?> DeleteAsync(Guid Id)
+    {
+        var existingRegion = await _context.Regions.FirstOrDefaultAsync(x => x.Id == Id);
+        
+        if (existingRegion == null)
+            return null;
+
+        _context.Regions.Remove(existingRegion);
+        await _context.SaveChangesAsync();
+        return existingRegion;
+    }
 }

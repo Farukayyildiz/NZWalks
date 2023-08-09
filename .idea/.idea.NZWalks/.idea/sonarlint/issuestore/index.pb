@@ -19,3 +19,15 @@ S
 #NZWalksAPI/Data/NzWalksDbContext.cs,a\5\a55fa3a48d40425d3211a4719172dd2cd83964c9
 K
 NZWalksAPI/appsettings.json,9\a\9a226233dd6d43b3a0eb381f46ca6bf8734677ce
+R
+"NZWalksAPI/Models/Domain/Region.cs,3\9\391cc8e90bb5b476f34edef158dac4a2f227ffaa
+R
+"NZWalksAPI/Models/DTO/RegionDto.cs,9\e\9ea4e084caf28f54573de7135eb6a6a5e06e9b94
+M
+NZWalksAPI/WeatherForecast.cs,f\4\f4d8b6bb2a566095d04189bee42054b48a30b7e0
+E
+NZWalksAPI/Program.cs,e\e\ee3ee03fa0bce3359b443b88cd53674789e14f5b
+e
+5NZWalksAPI/Models/DTO/Crate/CreateRegionRequestDto.cs,d\b\db982df39d6de32b81349d1a9a61b1ae3e60f76d
+f
+6NZWalksAPI/Models/DTO/Update/UpdateRegionRequestDto.cs,c\c\cc3baa4854ed8c72367cbb2558ba29f0eceebbd3

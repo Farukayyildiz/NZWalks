@@ -83,8 +83,7 @@ namespace NZWalksAPI.Controllers
             };
 
             //Use Domain Model to Create Region
-            await _context.Regions.AddAsync(regionDomainModel);
-            await _context.SaveChangesAsync();
+            regionDomainModel = await _regionRepository.CreateAsync(regionDomainModel);
 
             //It turns to information about newly saved item. And show it in the swagger.
             //Map Domain Model Back to DTO
@@ -104,17 +103,19 @@ namespace NZWalksAPI.Controllers
         public async Task<IActionResult> Update([FromRoute] Guid Id,
             [FromBody] UpdateRegionRequestDto updateRegionRequestDto)
         {
+            //Map DTO to Domain Model
+            var regionDomainModel = new Region
+            {
+                Code = updateRegionRequestDto.Code,
+                Name = updateRegionRequestDto.Name,
+                RegionImageUrl = updateRegionRequestDto.RegionImageUrl
+            };
+            
+            
             //Check if region exists
-            var regionDomainModel = await _context.Regions.FirstOrDefaultAsync(x => x.Id == Id);
+            await _regionRepository.UpdateAsync(Id, regionDomainModel);
             if (regionDomainModel == null)
                 return NotFound();
-
-            //Map DTO to Domain Model
-            regionDomainModel.Code = updateRegionRequestDto.Code;
-            regionDomainModel.Name = updateRegionRequestDto.Name;
-            regionDomainModel.RegionImageUrl = updateRegionRequestDto.RegionImageUrl;
-
-            await _context.SaveChangesAsync();
 
             //We never back Domain models. We always back DTOs to client
             //Map Domain Model Back To DTO 
@@ -134,13 +135,10 @@ namespace NZWalksAPI.Controllers
         [Route("{Id:Guid}")]
         public async Task<IActionResult> DeleteById([FromRoute] Guid Id)
         {
-            var regionDomainModel = await _context.Regions.FirstOrDefaultAsync(x => x.Id == Id);
+            var regionDomainModel = await _regionRepository.DeleteAsync(Id);
 
             if (regionDomainModel == null)
                 return NotFound();
-
-            _context.Regions.Remove(regionDomainModel); //There is no async delete method. It is still sync.
-             await _context.SaveChangesAsync();
 
             var regionDto = new RegionDto()
             {
