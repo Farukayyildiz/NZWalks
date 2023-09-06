@@ -1,3 +1,5 @@
+using NZWalksAPI.Models.Domain;
+
 namespace NZWalksAPI.Models.DTO;
 
 public class WalkDto
@@ -8,6 +10,7 @@ public class WalkDto
     public double LengthInKm { get; set; }
     public string? WalkImageUrl { get; set; }
 
-    public Guid DifficultyId { get; set; }
-    public Guid RegionId { get; set; }
+    //SQL Walk Repo dan gelecek Incluede metodu sayesinde id lere gerek kalmadan direkt olarak iki modelin DTO' suna gerekli bilgiler doldurulacak.
+    public RegionDto Region { get; set; }
+    public DifficultyDto Difficulty { get; set; }
 }

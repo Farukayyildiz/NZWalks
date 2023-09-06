@@ -1,4 +1,5 @@
 using AutoMapper.Configuration;
+using Microsoft.EntityFrameworkCore;
 using NZWalksAPI.Data;
 using NZWalksAPI.Models.Domain;
 
@@ -18,5 +19,12 @@ public class SQLWalkRepository : IWalkRepository
         await _context.Walks.AddAsync(walk);
         await _context.SaveChangesAsync();
         return walk;
+    }
+
+    
+    public async Task<List<Walk>> GetAllAsync()
+    {
+        //Include ==> bring the related tables data according to their Id
+        return await _context.Walks.Include("Difficulty").Include("Region").ToListAsync();
     }
 }
