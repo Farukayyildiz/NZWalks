@@ -513,3 +513,5 @@ Desktop.ini
 
 #SonarLint idea files
 *.pb
+/.idea/.idea.NZWalks/.idea/sonarlint/issuestore/index.pb
+/.idea/.idea.NZWalks/.idea/sonarlint/securityhotspotstore/index.pb
