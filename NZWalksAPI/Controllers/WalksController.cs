@@ -28,6 +28,7 @@ namespace NZWalksAPI.Controllers
             return Ok(_mapper.Map<WalkDto>(walkDomainModel));
         }
 
+        //BUG Test yapıldığında verilerin gelmediği gözlemlendi.
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
