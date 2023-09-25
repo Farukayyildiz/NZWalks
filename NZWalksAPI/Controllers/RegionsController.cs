@@ -1,5 +1,6 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using NZWalksAPI.CustomActionFilters;
 using NZWalksAPI.Data;
 using NZWalksAPI.Models.Domain;
 using NZWalksAPI.Models.DTO;
@@ -14,6 +15,7 @@ namespace NZWalksAPI.Controllers
         private readonly NzWalksDbContext _context;
         private readonly IRegionRepository _regionRepository;
         private readonly IMapper _mapper;
+
         public RegionsController(
             NzWalksDbContext context,
             IRegionRepository regionRepository,
@@ -67,6 +69,7 @@ namespace NZWalksAPI.Controllers
         }
 
         [HttpPost]
+        [ValidateModel]
         public async Task<IActionResult> Create([FromBody] CreateRegionRequestDto createRegionRequestDto)
         {
             //If model state is not valid it sends bad request error
@@ -98,8 +101,8 @@ namespace NZWalksAPI.Controllers
             
             //Map DTO to Domain Model
             var regionDomainModel = _mapper.Map<Region>(updateRegionRequestDto);
-            
-            
+
+
             //Check if region exists
             await _regionRepository.UpdateAsync(Id, regionDomainModel);
             if (regionDomainModel == null)
@@ -120,7 +123,7 @@ namespace NZWalksAPI.Controllers
 
             if (regionDomainModel == null)
                 return NotFound();
-            
+
             return Ok(_mapper.Map<RegionDto>(regionDomainModel));
         }
     }
