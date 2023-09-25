@@ -12,16 +12,13 @@ namespace NZWalksAPI.Controllers
     [ApiController]
     public class RegionsController : ControllerBase
     {
-        private readonly NzWalksDbContext _context;
         private readonly IRegionRepository _regionRepository;
         private readonly IMapper _mapper;
 
         public RegionsController(
-            NzWalksDbContext context,
             IRegionRepository regionRepository,
             IMapper mapper)
         {
-            _context = context;
             _regionRepository = regionRepository;
             _mapper = mapper;
         }
@@ -32,19 +29,6 @@ namespace NZWalksAPI.Controllers
         {
             //Get Data from database - Domain Models
             var regionsDomain = await _regionRepository.GetAllAsync();
-
-            //Map domain models to DTOs
-            // var regionsDto = new List<RegionDto>();
-            // foreach (var regionDomain in regionsDomain)
-            // {
-            //     regionsDto.Add(new RegionDto
-            //     {
-            //         Id = regionDomain.Id,
-            //         Code = regionDomain.Code,
-            //         Name = regionDomain.Name,
-            //         RegionImageUrl = regionDomain.RegionImageUrl
-            //     });
-            // }
 
             //return DTOs  
             return Ok(_mapper.Map<List<RegionDto>>(regionsDomain));
@@ -73,10 +57,7 @@ namespace NZWalksAPI.Controllers
         public async Task<IActionResult> Create([FromBody] CreateRegionRequestDto createRegionRequestDto)
         {
             //If model state is not valid it sends bad request error
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-            
-            
+
             //Map DTO to Domain Model
             var regionDomainModel = _mapper.Map<Region>(createRegionRequestDto);
 
@@ -92,16 +73,12 @@ namespace NZWalksAPI.Controllers
 
         [HttpPut]
         [Route("{Id:Guid}")] //only Guid type are passed. ( ' : '  for filtering)
+        [ValidateModel]
         public async Task<IActionResult> Update([FromRoute] Guid Id,
             [FromBody] UpdateRegionRequestDto updateRegionRequestDto)
         {
-
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
-            
             //Map DTO to Domain Model
             var regionDomainModel = _mapper.Map<Region>(updateRegionRequestDto);
-
 
             //Check if region exists
             await _regionRepository.UpdateAsync(Id, regionDomainModel);
