@@ -69,6 +69,11 @@ namespace NZWalksAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateRegionRequestDto createRegionRequestDto)
         {
+            //If model state is not valid it sends bad request error
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            
+            
             //Map DTO to Domain Model
             var regionDomainModel = _mapper.Map<Region>(createRegionRequestDto);
 
@@ -87,6 +92,10 @@ namespace NZWalksAPI.Controllers
         public async Task<IActionResult> Update([FromRoute] Guid Id,
             [FromBody] UpdateRegionRequestDto updateRegionRequestDto)
         {
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+            
             //Map DTO to Domain Model
             var regionDomainModel = _mapper.Map<Region>(updateRegionRequestDto);
             

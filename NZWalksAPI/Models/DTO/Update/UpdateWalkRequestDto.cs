@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace NZWalksAPI.Models.DTO;
 
-public class CreateWalksRequestDto
+public class UpdateWalkRequestDto
 {
     [Required]
     [MaxLength(100,ErrorMessage = "Walk")]
