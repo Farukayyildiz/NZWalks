@@ -27,6 +27,7 @@ namespace NZWalksAPI.Controllers
             {
                 return BadRequest(ModelState);
             }
+
             var walkDomainModel = _mapper.Map<Walk>(walksRequestDto);
             await _walkRepository.CreateAsync(walkDomainModel);
 
@@ -34,9 +35,9 @@ namespace NZWalksAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] string? filterOn, [FromQuery] string? filterQuery)
         {
-            var walksDomainModel = await _walkRepository.GetAllAsync();
+            var walksDomainModel = await _walkRepository.GetAllAsync(filterOn, filterQuery);
 
             //Map Domain Model to Dto
             return Ok(_mapper.Map<List<WalkDto>>(walksDomainModel));

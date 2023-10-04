@@ -33,19 +33,6 @@ namespace NZWalksAPI.Controllers
             //Get Data from database - Domain Models
             var regionsDomain = await _regionRepository.GetAllAsync();
 
-            //Map domain models to DTOs
-            // var regionsDto = new List<RegionDto>();
-            // foreach (var regionDomain in regionsDomain)
-            // {
-            //     regionsDto.Add(new RegionDto
-            //     {
-            //         Id = regionDomain.Id,
-            //         Code = regionDomain.Code,
-            //         Name = regionDomain.Name,
-            //         RegionImageUrl = regionDomain.RegionImageUrl
-            //     });
-            // }
-
             //return DTOs  
             return Ok(_mapper.Map<List<RegionDto>>(regionsDomain));
         }
@@ -104,10 +91,12 @@ namespace NZWalksAPI.Controllers
 
 
             //Check if region exists
-            await _regionRepository.UpdateAsync(Id, regionDomainModel);
             if (regionDomainModel == null)
                 return NotFound();
+            
+            await _regionRepository.UpdateAsync(Id, regionDomainModel);
 
+            
             //We never back Domain models. We always back DTOs to client
             //Map Domain Model Back To DTO
 
