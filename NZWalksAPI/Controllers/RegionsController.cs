@@ -81,10 +81,12 @@ namespace NZWalksAPI.Controllers
             var regionDomainModel = _mapper.Map<Region>(updateRegionRequestDto);
 
             //Check if region exists
-            await _regionRepository.UpdateAsync(Id, regionDomainModel);
             if (regionDomainModel == null)
                 return NotFound();
+            
+            await _regionRepository.UpdateAsync(Id, regionDomainModel);
 
+            
             //We never back Domain models. We always back DTOs to client
             //Map Domain Model Back To DTO
 
