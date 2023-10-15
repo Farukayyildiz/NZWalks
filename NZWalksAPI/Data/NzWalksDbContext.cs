@@ -5,9 +5,8 @@ namespace NZWalksAPI.Data;
 
 public class NzWalksDbContext : DbContext
 {
-    public NzWalksDbContext(DbContextOptions dbContext) : base(dbContext)
+    public NzWalksDbContext(DbContextOptions<NzWalksDbContext> dbContext) : base(dbContext)
     {
-        
     }
 
     public DbSet<Region> Regions { get; set; }
@@ -18,7 +17,7 @@ public class NzWalksDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        
+
         //Seed the data for difficulties
         //Easy , Mediuam, Hard
 
@@ -40,11 +39,11 @@ public class NzWalksDbContext : DbContext
                 Name = "Hard"
             }
         };
-        
+
         //Seed difficulties to the database
         modelBuilder.Entity<Difficulty>().HasData(difficulties);
-        
-        
+
+
         //Seed data for Regions
         var regions = new List<Region>()
         {
@@ -53,7 +52,8 @@ public class NzWalksDbContext : DbContext
                 Id = Guid.Parse("33523F5C-554B-4455-8EA4-C713B792CDB1"),
                 Name = "Auckland",
                 Code = "AKL",
-                RegionImageUrl = "https://images.pexels.com/photos/5169056/pexels-photo-5169056.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+                RegionImageUrl =
+                    "https://images.pexels.com/photos/5169056/pexels-photo-5169056.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
             },
             new Region
             {
@@ -74,14 +74,16 @@ public class NzWalksDbContext : DbContext
                 Id = Guid.Parse("cfa06ed2-bf65-4b65-93ed-c9d286ddb0de"),
                 Name = "Wellington",
                 Code = "WGN",
-                RegionImageUrl = "https://images.pexels.com/photos/4350631/pexels-photo-4350631.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                RegionImageUrl =
+                    "https://images.pexels.com/photos/4350631/pexels-photo-4350631.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
             },
             new Region
             {
                 Id = Guid.Parse("906cb139-415a-4bbb-a174-1a1faf9fb1f6"),
                 Name = "Nelson",
                 Code = "NSN",
-                RegionImageUrl = "https://images.pexels.com/photos/13918194/pexels-photo-13918194.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                RegionImageUrl =
+                    "https://images.pexels.com/photos/13918194/pexels-photo-13918194.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
             },
             new Region
             {

@@ -1,7 +1,7 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NZWalksAPI.CustomActionFilters;
-using NZWalksAPI.Data;
 using NZWalksAPI.Models.Domain;
 using NZWalksAPI.Models.DTO;
 using NZWalksAPI.Repositories;
@@ -10,6 +10,7 @@ namespace NZWalksAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize] //If the request not authenticated it'll blocked (Jwt)
     public class RegionsController : ControllerBase
     {
         private readonly IRegionRepository _regionRepository;
