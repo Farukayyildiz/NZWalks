@@ -10,6 +10,7 @@ namespace NZWalksAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize] //If the request not authenticated it'll blocked (Jwt)
     public class RegionsController : ControllerBase
     {
         private readonly IRegionRepository _regionRepository;
@@ -25,7 +26,6 @@ namespace NZWalksAPI.Controllers
 
 
         [HttpGet]
-        [Authorize(Roles = "Reader")]
         public async Task<IActionResult> GetAllAsync()
         {
             //Get Data from database - Domain Models
@@ -37,7 +37,6 @@ namespace NZWalksAPI.Controllers
 
         [HttpGet]
         [Route("{Id:Guid}")]
-        [Authorize(Roles = "Reader")]
         public async Task<IActionResult> GetById([FromRoute] Guid Id)
         {
             // var region = _context.Regions.Find(Id); //just works with ID field. It is useless for other fields.!!
@@ -56,7 +55,6 @@ namespace NZWalksAPI.Controllers
 
         [HttpPost]
         [ValidateModel]
-        [Authorize(Roles = "OmerFaruk")]
         public async Task<IActionResult> Create([FromBody] CreateRegionRequestDto createRegionRequestDto)
         {
             //If model state is not valid it sends bad request error
@@ -77,7 +75,6 @@ namespace NZWalksAPI.Controllers
         [HttpPut]
         [Route("{Id:Guid}")] //only Guid type are passed. ( ' : '  for filtering)
         [ValidateModel]
-        [Authorize(Roles = "OmerFaruk")]
         public async Task<IActionResult> Update([FromRoute] Guid Id,
             [FromBody] UpdateRegionRequestDto updateRegionRequestDto)
         {
@@ -87,10 +84,10 @@ namespace NZWalksAPI.Controllers
             //Check if region exists
             if (regionDomainModel == null)
                 return NotFound();
-
+            
             await _regionRepository.UpdateAsync(Id, regionDomainModel);
 
-
+            
             //We never back Domain models. We always back DTOs to client
             //Map Domain Model Back To DTO
 
@@ -100,7 +97,6 @@ namespace NZWalksAPI.Controllers
 
         [HttpDelete]
         [Route("{Id:Guid}")]
-        [Authorize(Roles = "OmerFaruk")]
         public async Task<IActionResult> DeleteById([FromRoute] Guid Id)
         {
             var regionDomainModel = await _regionRepository.DeleteAsync(Id);
