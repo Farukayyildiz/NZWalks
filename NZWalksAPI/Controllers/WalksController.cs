@@ -1,3 +1,4 @@
+using System.Net;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using NZWalksAPI.CustomActionFilters;
@@ -39,6 +40,8 @@ namespace NZWalksAPI.Controllers
             var walksDomainModel =
                 await _walkRepository.GetAllAsync(filterOn, filterQuery, sortBy, isAscending ?? true, pageNumber,
                     pageSize);
+
+            throw new Exception("This is a new exception");
 
             //Map Domain Model to Dto
             return Ok(_mapper.Map<List<WalkDto>>(walksDomainModel));
