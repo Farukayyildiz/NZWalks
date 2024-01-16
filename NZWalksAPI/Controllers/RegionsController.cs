@@ -8,6 +8,7 @@ using NZWalksAPI.Repositories;
 
 namespace NZWalksAPI.Controllers
 {
+    
     [Route("api/[controller]")]
     [ApiController]
     [Authorize] //If the request not authenticated it'll blocked (Jwt)
