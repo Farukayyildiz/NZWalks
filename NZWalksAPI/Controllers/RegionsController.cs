@@ -8,9 +8,9 @@ using NZWalksAPI.Repositories;
 
 namespace NZWalksAPI.Controllers
 {
-    [Route("api/[controller]")]
+     [Route("api/[controller]")]
     [ApiController]
-    [Authorize] //If the request not authenticated it'll blocked (Jwt)
+    // [Authorize] //If the request not authenticated it'll blocked (Jwt)
     public class RegionsController : ControllerBase
     {
         private readonly IRegionRepository _regionRepository;

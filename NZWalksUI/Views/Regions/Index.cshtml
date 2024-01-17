@@ -1,8 +1,7 @@
-@model TModel
 
-@{
-    ViewBag.Title = "title";
-    Layout = "_Layout";
+<h1 class="mt-3">Regions</h1>
+
+@if (ViewBag.Response is not null)
+{
+    <p>@ViewBag.Response</p>
 }
-
-<h2>title</h2>
