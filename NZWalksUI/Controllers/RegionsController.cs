@@ -1,4 +1,7 @@
+using System.Text;
+using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
+using NZWalksUI.Models;
 using NZWalksUI.Models.DTO;
 
 namespace NZWalksUI.Controllers;
@@ -13,6 +16,7 @@ public class RegionsController : Controller
     }
 
     // GET
+    [HttpGet]
     public async Task<IActionResult> Index()
     {
         List<RegionDto> response = new List<RegionDto>();
@@ -32,5 +36,33 @@ public class RegionsController : Controller
         }
 
         return View(response);
+    }
+
+    [HttpGet]
+    public IActionResult Add()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Add(AddRegionViewModel regionViewModel)
+    {
+        var client = _httpClientFactory.CreateClient();
+
+        var httpRequestMessage = new HttpRequestMessage
+        {
+            Method = HttpMethod.Post,
+            RequestUri = new Uri("https://localhost:7163/api/regions"),
+            Content = new StringContent(JsonSerializer.Serialize(regionViewModel), Encoding.UTF8, "application/json")
+        };
+        var httpResponseMessage =await client.SendAsync(httpRequestMessage);
+        httpResponseMessage.EnsureSuccessStatusCode();
+
+        var response = await httpResponseMessage.Content.ReadFromJsonAsync<RegionDto>();
+        
+        if (response is not null)
+            return RedirectToAction("Index", "Regions");
+
+        return View();
     }
 }
