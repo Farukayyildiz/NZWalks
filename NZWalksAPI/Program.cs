@@ -6,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using NZWalksAPI.Data;
 using NZWalksAPI.Mappings;
 using NZWalksAPI.Repositories;
+using NZWalksAPI.Repositories.Token;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +25,7 @@ builder.Services.AddDbContext<NzWalksAuthDbContext>(options
 
 builder.Services.AddScoped<IRegionRepository, SQLRegionRepository>();
 builder.Services.AddScoped<IWalkRepository, SQLWalkRepository>();
+builder.Services.AddScoped<ITokenRepository, TokenRepository>();
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 
